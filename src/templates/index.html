@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robot Control</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"
+            integrity="sha512-..."></script>
+
+
+    <!--    <style>-->
+    <!--        .flex {-->
+    <!--            display: flex;-->
+    <!--        }-->
+
+    <!--        .flex-row {-->
+    <!--            flex-direction: row;-->
+    <!--        }-->
+
+    <!--        .flex-column {-->
+    <!--            flex-direction: column;-->
+    <!--        }-->
+
+    <!--        .align-items-end {-->
+    <!--            align-items: end;-->
+    <!--        }-->
+
+    <!--        .margin-top {-->
+    <!--            margin-top: 10px;-->
+    <!--        }-->
+    <!--    </style>-->
+</head>
+<body class="flex flex-col justify-center items-center w-full h-screen">
+<form method="POST" action="/" class="w-80">
+    <h1>Robot Control Interface</h1>
+    <div class="flex flex-row items-end gap-1 mt-2">
+        <div>
+            <button type="submit" name="button" value="left"
+                    class="control-button w-24 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Left
+            </button>
+        </div>
+        <div class="flex flex-col gap-1">
+            <button type="submit" name="button" value="forward"
+                    class="control-button w-24 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Forward
+            </button>
+            <button type="submit" name="button" value="backward"
+                    class="control-button w-24 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Backward
+            </button>
+        </div>
+        <div>
+            <button type="submit" name="button" value="right"
+                    class="control-button w-24 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Right
+            </button>
+        </div>
+    </div>
+    <div class="mt-2">
+        <label for="speed">Speed:</label>
+        <input type="range" id="speed" name="speed" min="0" max="100" value="100" step="10"
+               class="appearance-none w-full h-3 bg-gray-200 rounded-full outline-none">
+    </div>
+</form>
+<script>
+    function click_handler(event) {
+        event.preventDefault();
+
+        const socket = io();
+
+        const data = {
+            "button": this.value,
+            "speed": document.getElementById('speed').value,
+        }
+
+        socket.emit('command', data)
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to handle button clicks
+        const buttons = document.getElementsByClassName('control-button');
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener('click', click_handler);
+        }
+    });
+</script>
+</body>
+</html>

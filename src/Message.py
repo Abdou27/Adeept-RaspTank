@@ -1,20 +1,21 @@
 from typing import Union
 
+from src.BetterDict import BetterDict
 
-class Message(dict):
-    def __init__(self) -> None:
+
+class Message(BetterDict):
+    def __init__(self, **options) -> None:
         super().__init__()
-        self.sender_ip = None
-        self.receiver_ip = None
+
+        self.sender = options.get("sender", None)
+        self.receiver = options.get("receiver", None)
         self.message_type = None
-        self.payload = None
+        # self.payload = None
 
-    def __getattr__(self, attr: str) -> Union[str, dict]:
-        if attr in self:
-            return self[attr]
-        else:
-            raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{attr}'")
+    def __str__(self):
+        return f"{self.message_type}:{self.sender}:{self.receiver}"
 
-    def __setattr__(self, attr: str, value: Union[str, dict]) -> None:
-        self[attr] = value
-
+    def send(self):
+        with Socket.get_socket() as s:
+            s.connect(self.receiver)
+            s.send(str(self))
