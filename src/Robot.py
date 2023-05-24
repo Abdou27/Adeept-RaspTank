@@ -18,6 +18,6 @@ async def send_command(command: dict):
         move.move(100, cmd_type, 'no')
     elif cmd_type in ['left', 'right']:
         move.move(100, 'no', cmd_type)
-    elif 'stop' == cmd_type:
+    elif cmd_type == 'stop':
         move.motorStop()
     pass
