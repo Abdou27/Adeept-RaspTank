@@ -48,7 +48,7 @@ async def send_command(command: dict, request: Request):
 async def route_command(command: dict, robot_ip: str):
     command_type = command["type"]
     payload = command["payload"]
-    url = f"{robot_ip}:5400/sendCommand"
+    url = f"http://{robot_ip}:5400/sendCommand"
     data = {
         "type": command_type,
         "payload": payload,
